@@ -1,0 +1,138 @@
+<form>
+  <div fxLayout="row wrap">
+    <mat-form-field appearance="outline" fxFlex fxFlex.lt-sm="100">
+      <mat-label>Titre</mat-label>
+      <input matInput [(ngModel)]="workshop.title" [formControl]="title"/>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row wrap" fxFlexAlign="space-evenly" fxLayoutGap="5px">
+    <div id="ckeditor" fxFlex fxFlex.lt-sm="100"></div>
+
+<!--    <mat-form-field appearance="outline" fxFlex fxFlex.lt-sm="100">-->
+<!--      <mat-label>Description</mat-label>-->
+<!--      <textarea name="description" matInput rows="4" [(ngModel)]="workshop.description" [formControl]="description"></textarea>-->
+<!--    </mat-form-field>-->
+    <input type="file" #fileUpload id="fileUpload" name="fileUpload" accept="image/*" style="display:none;" />
+    <button #imageButton id="imageButton" fxFlex.gt-xs="20" fxFlex.lt-sm="100" mat-raised-button color="primary" class="form-button" style="background-size: cover;" (click)="openImage()">
+      <mat-icon>camera_alt</mat-icon>
+    </button>
+  </div>
+  <div fxLayout="row wrap" fxFlexAlign="space-evenly" fxLayoutGap="5px">
+    <mat-form-field appearance="outline" fxFlex fxFlex.lt-sm="100">
+      <mat-label>Catégorie</mat-label>
+      <mat-select name="category" [(ngModel)]="workshop.category" [formControl]="category">
+        <mat-option *ngFor="let cat of categories" [value]="cat">
+          {{cat}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex fxFlex.lt-sm="100">
+      <mat-label>Limite d'inscription</mat-label>
+      <input matInput [ngxMatDatetimePicker]="inscriptionPicker" name="inscription" [(ngModel)]="workshop.inscriptionLimit" [formControl]="inscription">
+      <mat-datepicker-toggle matSuffix [for]="inscriptionPicker"></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #inscriptionPicker [showSeconds]=false></ngx-mat-datetime-picker>
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex fxFlex.lt-sm="100">
+      <mat-label>Date de l'atelier</mat-label>
+      <input matInput [matDatepicker]="dateWorkshopPicker" name="dateWorkshop" [(ngModel)]="workshop.date" [formControl]="dateWorkshop">
+      <mat-datepicker-toggle matSuffix [for]="dateWorkshopPicker"></mat-datepicker-toggle>
+      <mat-datepicker #dateWorkshopPicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <!-- TITLE LINE -->
+  <div fxLayout="row" fxFlexAlign="space-evenly" fxLayoutGap="5px">
+    <div fxFlex="40" fxLayoutGap="5px">
+      <mat-label fxFlexOffset="70">Participants</mat-label>
+    </div>
+    <div fxFlex fxLayoutGap="5px">
+      <mat-label>Ingrédients</mat-label>
+    </div>
+  </div>
+
+  <div fxLayout="row" fxLayoutGap="5px">
+    <!-- LEFT COLUMN -->
+    <div fxLayout="column" fxFlex="40" fxFlex.lt-sm="100">
+      <div fxLayout="row" fxLayoutGap="5px">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Organisation</mat-label>
+          <mat-select name="organizer" [(ngModel)]="workshop.emailOrganizer" [formControl]="organizer">
+            <mat-option *ngFor="let or of organizers" [value]="or.email">
+              {{or.firstName}} {{or.lastName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="15">
+          <mat-label>Min</mat-label>
+          <input type="number" min="1" matInput name="min-participants" [(ngModel)]="workshop.minParticipants" [formControl]="minParticipants">
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="15">
+          <mat-label>Max</mat-label>
+          <input min="1" type="number" matInput name="max-participants" [(ngModel)]="workshop.maxParticipants" [formControl]="maxParticipants">
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutGap="5px">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Rue</mat-label>
+          <input matInput name="street" [(ngModel)]="workshop.street" [formControl]="street">
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Localité</mat-label>
+          <mat-select name="location" [(ngModel)]="workshop.location" [formControl]="locationField">
+            <mat-option *ngFor="let loc of locations" [value]="loc">
+              {{loc.npa}} {{loc.city}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <!-- RIGHT COLUMN -->
+    <div fxLayout="column" fxFlex="60" fxFlex.lt-sm="100">
+      <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="center center" *ngFor="let ingredient of workshop.ingredients; let i = index">
+        <div fxFlex="20">
+          {{ingredient.count}}
+        </div>
+        <div fxFlex="20">
+          {{ingredient.unit}}
+        </div>
+        <div fxFlex>
+          {{ingredient.ingredient}}
+        </div>
+        <button class="fab-margin" mat-mini-fab color="warn" (click)="removeIngredient(i)"><mat-icon>close</mat-icon></button>
+      </div>
+      <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="center center">
+        <mat-form-field appearance="outline" fxFlex="20">
+          <mat-label>Quantité</mat-label>
+          <input min="1" type="number" matInput name="ingredient-qty" [(ngModel)]="newIngredient.count">
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="20">
+          <mat-label>Unité</mat-label>
+          <mat-select name="ingredient-unit" [(ngModel)]="newIngredient.unit">
+            <mat-option *ngFor="let unit of INGREDIENT_UNITS" [value]="unit">
+              {{unit}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Ingrédient</mat-label>
+          <input matInput name="ingredient-name" [(ngModel)]="newIngredient.ingredient">
+          <div style="color: red;" *ngIf="isIngredientsMissing">Please add at least one ingredient</div>
+        </mat-form-field>
+        <button class="fab-margin" mat-mini-fab color="primary" (click)="addIngredient()"><mat-icon>add</mat-icon></button>
+      </div>
+    </div>
+
+  </div>
+  <div fxLayout="row" fxLayoutGap="5px" style="margin-top:50px;">
+    <mat-form-field appearance="outline" fxFlex="15" fxFlexOffset="55">
+      <mat-label>Type</mat-label>
+      <mat-select name="type" [(ngModel)]="workshop.state" [formControl]="type" (ngModelChange)="onTypeChange($event)">
+        <mat-option *ngFor="let type of TYPES" [value]="type.value">
+          {{type.text}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="accent" class="form-button" fxFlex="15" (click)="cancel()">ANNULER</button>
+    <button type="submit" mat-raised-button color="primary" class="form-button" fxFlex="15" (click)="submitForm()">{{submitLabel}}</button>
+  </div>
+  <div style="float: right; color: red;" *ngIf="isImageMissing">Please upload an image</div>
+</form>

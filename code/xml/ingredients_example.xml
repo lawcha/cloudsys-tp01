@@ -1,0 +1,11 @@
+<ingredients xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ingredients_validator.xsd">
+  <ingredient count="5" unit="kg">
+    Patates
+  </ingredient>
+  <ingredient count="900" unit="g">
+    Fromage
+  </ingredient>
+  <ingredient count="1">
+    Livre de pain
+  </ingredient>
+</ingredients>

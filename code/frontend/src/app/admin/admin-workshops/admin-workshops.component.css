@@ -1,0 +1,10 @@
+.mar-bot {
+  margin-bottom: 10px;
+}
+.right {
+  float: right;
+}
+.min-button {
+  padding: 0;
+  min-width: 40px;
+}

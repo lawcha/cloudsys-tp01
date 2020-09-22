@@ -1,0 +1,29 @@
+<h1>Votre liste de courses</h1>
+<div fxLayout="row wrap" fxLayoutGap="5px" fxLayoutAlign="start center" fxLayoutAlign.lt-sm="center center">
+  <mat-form-field appearance="outline" fxFlex.lt-sm="100">
+    <mat-label>Date de début</mat-label>
+    <input matInput [matDatepicker]="startDatePicker" name="startDate" [(ngModel)]="startDate" (focusout)="getShoppingList()">
+    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #startDatePicker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field appearance="outline" fxFlex.lt-sm="100">
+    <mat-label>Date de fin</mat-label>
+    <input matInput [matDatepicker]="endDatePicker" name="endDate" [(ngModel)]="endDate" (focusout)="getShoppingList()">
+    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #endDatePicker></mat-datepicker>
+  </mat-form-field>
+  <button matTooltip="Exporter la liste" class="mar-bot" mat-mini-fab color="primary" (click)="exportList()"><mat-icon>archive</mat-icon></button>
+</div>
+<div *ngIf="shoppingList.length === 0">Il n'y a rien à acheter</div>
+<div style="max-height:400px; overflow-y: scroll">
+  <div *ngFor="let item of shoppingList">
+    <strong>{{item.title}}</strong> - {{item.date}}<br>
+    <table>
+      <tr *ngFor="let ingredient of item.ingredients">
+        <td align="right">{{ingredient.count}}{{ingredient.unit}}</td>
+        <td>{{ingredient.ingredient}}</td>
+      </tr>
+    </table>
+    <hr>
+  </div>
+</div>

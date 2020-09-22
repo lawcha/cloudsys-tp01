@@ -1,0 +1,87 @@
+<div fxLayout="row wrap">
+  <div fxFlex="50" fxFlex.lt-sm="100" fxLayoutAlign="start" fxLayoutGap="5px">
+    <div>
+      <img class="avatar" [src]="workshop.image" />
+    </div>
+    <div fxFlexAlign="center">
+      <h1 class="card-text">{{workshop.title}}</h1>
+      <h3 class="card-text subtitle">{{workshop.title}}</h3>
+    </div>
+  </div>
+  <div fxFlex="50" fxFlex.lt-sm="100" fxLayoutAlign="end" fxFlexAlign="center">
+    <mat-chip-list>
+      <mat-chip>
+        <mat-icon *ngIf="workshop.state === 'draft'">edit</mat-icon>
+        <mat-icon *ngIf="workshop.state !== 'draft'">check</mat-icon>
+        {{STATES[workshop.state]}}
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+</div>
+<hr>
+<div fxLayout="row wrap">
+  <iframe [srcdoc]="workshop.description">
+  </iframe>
+</div>
+<div fxLayout="row wrap" fxLayoutGap="5px">
+  <mat-card fxFlex fxFlex.lt-sm="100">
+    <mat-card-subtitle class="card-text subtitle">Catégorie</mat-card-subtitle>
+    <mat-card-title class="card-text">{{workshop.category}}</mat-card-title>
+  </mat-card>
+  <mat-card fxFlex fxFlex.lt-sm="100">
+    <mat-card-subtitle class="card-text subtitle">Limite d'inscription</mat-card-subtitle>
+    <mat-card-title class="card-text">{{datePipe.transform(workshop.inscriptionLimit, 'dd.MM.yyy hh:mm')}}</mat-card-title>
+  </mat-card>
+  <mat-card fxFlex fxFlex.lt-sm="100">
+    <mat-card-subtitle class="card-text subtitle">Date de l'atelier</mat-card-subtitle>
+    <mat-card-title class="card-text">{{datePipe.transform(workshop.date, 'dd.MM.yyy')}}</mat-card-title>
+  </mat-card>
+</div>
+<div fxLayout="row wrap" fxLayoutGap="5px">
+  <div fxLayout="column" fxFlex="40" fxFlex.lt-sm="100"> <!-- LEFT COLUMN -->
+    <mat-card fxFlex="100">
+      <mat-card-subtitle class="card-text subtitle">Organisation</mat-card-subtitle>
+      <mat-card-title class="card-text">
+        {{organizer.firstName}} {{organizer.lastName}}<br>
+        {{organizer.street}}, {{organizer.location.npa}} {{organizer.location.city}}<br>
+        E-mail: {{organizer.email}}<br>
+        Téléphone: {{organizer.phone}}
+      </mat-card-title>
+    </mat-card>
+    <mat-card fxFlex="100">
+      <mat-card-subtitle class="card-text subtitle">Lieu de l'atelier</mat-card-subtitle>
+      <mat-card-title class="card-text">
+        {{workshop.street}}<br>
+        {{workshop.location.npa}} {{workshop.location.city}}
+      </mat-card-title>
+    </mat-card>
+  </div>
+  <div fxLayout="column" fxFlex fxFlex.lt-sm="100"> <!-- RIGHT COLUMN -->
+    <mat-card fxFlex="100">
+      <mat-card-subtitle class="card-text subtitle">Ingrédients</mat-card-subtitle>
+      <mat-card-title class="card-text">
+        <table>
+          <tr *ngFor="let ingredient of workshop.ingredients">
+            <td align="right">{{ingredient.count}}{{ingredient.unit}}</td>
+            <td>{{ingredient.ingredient}}</td>
+          </tr>
+        </table>
+      </mat-card-title>
+    </mat-card>
+  </div>
+</div>
+<hr>
+<div fxLayout="row wrap" fxLayoutAlign="end" fxLayoutGap="5px">
+    <button fxFlex.xs="100" mat-raised-button style="background: #eee" (click)="goBack()">RETOUR AUX ATELIERS</button>
+    <button fxFlex.xs="100" mat-raised-button color="primary" (click)="subscribe()">
+      <span *ngIf="!isSubscribed">S'INSCRIRE</span>
+      <span *ngIf="isSubscribed">SE DESINSCRIRE</span>
+    </button>
+    <mat-card fxFlex.xs="100" class="no-mar mat-elevation-z0">
+      <mat-card-subtitle class="card-text subtitle">Nombre de participants</mat-card-subtitle>
+      <mat-card-title class="card-text">
+        {{workshop.minParticipants}}/{{workshop.maxParticipants}}
+      </mat-card-title>
+    </mat-card>
+</div>
+

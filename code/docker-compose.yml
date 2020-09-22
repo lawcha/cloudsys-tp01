@@ -1,0 +1,75 @@
+version: '3'
+
+services:
+  postgres:
+    restart: unless-stopped
+    image: postgres:12
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres:/data/postgres
+      - ./schema.sql://docker-entrypoint-initdb.d/1_schema.sql
+      - ./triggers.sql://docker-entrypoint-initdb.d/2_triggers.sql
+      - ./procedures.sql://docker-entrypoint-initdb.d/3_procedures.sql
+      - ./npa_city.sql://docker-entrypoint-initdb.d/4_npa_city.sql
+      - ./data.sql://docker-entrypoint-initdb.d/5_data.sql
+      - ./spring_role.sql://docker-entrypoint-initdb.d/6_spring_role.sql
+    environment:
+      POSTGRES_USER: pi-group-6
+      POSTGRES_PASSWORD: pi-group-6
+      POSTGRES_DB: passion-cuisine
+      PGDATA: /data/postgres
+    networks: 
+      - backend
+
+  spring-boot:
+    restart: unless-stopped
+    build:
+      context: ./backend
+    ports:
+      - 8080:8080
+    environment: 
+      PASSION_CUISINE_DB_HOST: postgres:5432
+      PASSION_CUISINE_DB_NAME: passion-cuisine
+      PASSION_CUISINE_DB_USER: spring-user
+      PASSION_CUISINE_DB_PASS: spring-user-pass
+    depends_on: 
+      - postgres
+    networks:
+      - frontend
+      - backend
+
+#  angular:
+#    restart: unless-stopped
+#    build:
+#      context: ./frontend
+#    # depends_on: 
+#    #   - spring-boot
+#    ports:
+#      - 80:80
+#    networks:
+#      - frontend
+
+  postgres-admin:
+    restart: unless-stopped
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+       - ./pgadmin_servers.json:/pgadmin4/servers.json
+       - postgres-admin:/root/.pgadmin
+    ports:
+      - 5480:80
+    networks:
+      - backend
+
+networks: 
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+volumes: 
+  postgres:
+  postgres-admin:

@@ -1,0 +1,9 @@
+<mat-toolbar color="primary">
+  <a routerLink="/"><img src="assets/logo.png" height="60px" style="margin-top:3px"></a>
+  <span class="fill-space"></span>
+  <button *ngIf="token==''" mat-raised-button (click)="openLoginDialog()">CONNEXION</button>
+  <button *ngIf="token!==''" mat-raised-button (click)="logout()">DÉCONNEXION</button>
+</mat-toolbar>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

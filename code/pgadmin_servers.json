@@ -1,0 +1,13 @@
+{
+    "Servers" : {
+        "1" : {
+            "Name": "Main server",
+            "Group": "Servers",
+            "Port": 5432,
+            "Username": "pi-group-6",
+            "Host": "postgres",
+            "SSLMode": "prefer",
+            "MaintenanceDB": "postgres"
+        }
+    }
+}

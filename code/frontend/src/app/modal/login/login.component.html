@@ -1,0 +1,53 @@
+<mat-tab-group>
+  <mat-tab label="Connexion">
+    <form class="my-form padding" (submit)="login()" name="logForm">
+      <mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
+        <input [(ngModel)]="user.email" matInput placeholder="Email" name="email" type="text" required>
+      </mat-form-field><br>
+      <mat-form-field class="full-width">
+        <mat-label>Mot de passe</mat-label>
+        <input [(ngModel)]="user.password" matInput  name="password" type="password" required>
+      </mat-form-field>
+      <button color="primary" class="full-width" mat-raised-button type="submit">SE CONNECTER</button>
+    </form>
+  </mat-tab>
+  <mat-tab label="Nouveau compte">
+    <form class="my-form padding" (ngSubmit)="register()" name="regForm">
+      <mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
+        <input [(ngModel)]="user.email" matInput name="email">
+      </mat-form-field><br>
+      <mat-form-field class="full-width">
+        <mat-label>Mot de passe</mat-label>
+        <input [(ngModel)]="user.password" matInput type="password" name="password">
+      </mat-form-field><br>
+      <mat-form-field class="full-width">
+        <mat-label>Prénom</mat-label>
+        <input [(ngModel)]="user.firstName" matInput type="text" name="firstname">
+      </mat-form-field><br>
+      <mat-form-field class="full-width">
+        <mat-label>Nom</mat-label>
+        <input [(ngModel)]="user.lastName" matInput type="text" name="lastname">
+      </mat-form-field><br>
+      <mat-form-field class="full-width">
+        <mat-label>Rue</mat-label>
+        <input [(ngModel)]="user.street" matInput type="text" name="street">
+      </mat-form-field><br>
+      <mat-form-field class="full-width">
+        <mat-label>Localité</mat-label>
+        <mat-select name="location" [(ngModel)]="user.location">
+          <mat-option *ngFor="let loc of locations" [value]="loc">
+            {{loc.npa}} {{loc.city}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field><br>
+      <mat-form-field class="full-width">
+        <mat-label>Téléphone</mat-label>
+        <input [(ngModel)]="user.phone" matInput type="tel" name="phone">
+      </mat-form-field>
+      <button color="primary" class="full-width" mat-raised-button type="submit">S'ENREGISTRER</button>
+    </form>
+  </mat-tab>
+</mat-tab-group>
+

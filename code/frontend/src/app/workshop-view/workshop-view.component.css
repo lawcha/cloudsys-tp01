@@ -1,0 +1,27 @@
+.avatar {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+.card-text {
+  margin: 0;
+  line-height: 20pt;
+}
+.subtitle {
+  color: grey;
+}
+mat-card-title {
+  font-weight: 300 !important;
+}
+mat-card {
+  margin-bottom: 15px;
+}
+.no-mar {
+  margin: 0;
+}
+iframe {
+  width: 100%;
+  border: 0;
+}

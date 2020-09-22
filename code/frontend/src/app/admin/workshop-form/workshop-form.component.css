@@ -1,0 +1,14 @@
+.form-button {
+  width:100%;
+  margin-bottom: 1.34375em;
+}
+.fab-margin {
+  margin-bottom: 1.4em;
+}
+ckeditor {
+  margin-bottom: 15px;
+
+}
+:host ::ng-deep .ck-editor__editable_inline {
+  min-height: 200px;
+}

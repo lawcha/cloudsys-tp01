@@ -1,0 +1,31 @@
+.card-split {
+  height: 200px;
+  overflow: hidden;
+}
+.card-split img {
+  object-fit: cover;
+  margin: 0;
+  width: 100px;
+}
+.sm-card-split {
+  height: auto;
+}
+mat-card {
+  padding: 0;
+  margin-bottom: 10px;
+}
+.card-body {
+  padding: 15px;
+  height: 100%;
+}
+iframe {
+  width: 100%;
+  border: 0;
+  height: 100px;
+}
+.sm-height {
+  height: 80px;
+}
+mat-card-content {
+  padding: 10px;
+}

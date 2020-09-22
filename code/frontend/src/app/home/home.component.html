@@ -1,0 +1,56 @@
+<div fxLayout="row"> <!-- HEADER -->
+  <h1>Ateliers</h1>
+  <div fxFlex fxLayoutAlign="end center" fxLayoutGap="5px">
+    <button *ngIf="isConnected" mat-raised-button (click)="filtersShown = !filtersShown">Filtres</button>
+    <mat-form-field *ngIf="!isConnected">
+      <mat-label>Tri</mat-label>
+      <mat-select name="type" [(ngModel)]="sort" (ngModelChange)="getWorkshopsSort()">
+        <mat-option *ngFor="let sort of SORTS" [value]="sort.value">
+          {{sort.text}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<mat-card fxLayout="row" *ngIf="filtersShown">
+  <mat-card-content>
+    <mat-form-field>
+      <mat-label>Tri</mat-label>
+      <mat-select name="type" [(ngModel)]="sort" (ngModelChange)="getWorkshopsSort()">
+        <mat-option *ngFor="let sort of SORTS" [value]="sort.value">
+          {{sort.text}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Categorie</mat-label>
+      <mat-select name="category" [(ngModel)]="category" (ngModelChange)="getWorkshopsFilter()">
+        <mat-option *ngFor="let cat of categories" [value]="cat">
+          {{cat}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </mat-card-content>
+</mat-card>
+<div>
+  <span *ngIf="workshops.length == 0">Aucun atelier</span>
+  <mat-card *ngFor="let workshop of workshops">
+    <div fxLayout="row wrap" class="card-split" ngClass.lt-sm="sm-card-split">
+      <img fxFlex="25" ngClass.lt-sm="sm-height" fxFlex.lt-sm="100" mat-card-image [src]="workshop.image">
+      <div fxFlex class="card-body" fxLayout="row wrap" fxLayoutGap="5px">
+        <div fxFlex>
+          <mat-card-title>{{workshop.title}}</mat-card-title>
+          <mat-card-content *ngIf="isConnected">
+            <iframe [srcdoc]="workshop.description"></iframe>
+          </mat-card-content>
+        </div>
+        <div fxFlex="20" fxLayout="column" fxFlex.lt-sm="100" fxLayout.lt-sm="row">
+          <span fxFlex><mat-icon>calendar_today</mat-icon> {{datePipe.transform(workshop.date, 'dd.MM.yyy')}}</span>
+          <span fxFlex *ngIf="isConnected"><mat-icon>group</mat-icon> {{workshop.minParticipants}}/{{workshop.maxParticipants}}</span>
+          <button fxFlex mat-raised-button color="primary" *ngIf="isConnected" (click)="openDetails(workshop.title, workshop.date)">Détails</button>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

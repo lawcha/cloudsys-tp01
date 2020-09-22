@@ -1,0 +1,12 @@
+.fill-space {
+  flex: 1 1 auto;
+}
+a {
+  text-decoration: none;
+  color: white;
+}
+.container {
+  padding: 10px;
+  max-width: 70rem;
+  margin: 20px auto 20px auto;
+}

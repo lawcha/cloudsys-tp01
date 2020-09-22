@@ -1,0 +1,25 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="ingredients" type="ingredientsType"/>
+  <xs:complexType name="ingredientsType">
+    <xs:sequence>
+      <xs:element type="ingredientType" name="ingredient" maxOccurs="unbounded" minOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ingredientType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:nonNegativeInteger" name="count" use="required"/>
+        <xs:attribute type="unitType" name="unit" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="unitType" final="restriction" >
+    <xs:restriction base="xs:string">
+        <xs:enumeration value="mg" />
+        <xs:enumeration value="g" />
+        <xs:enumeration value="kg" />
+        <xs:enumeration value="ml" />
+        <xs:enumeration value="l" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
