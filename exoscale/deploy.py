@@ -6,6 +6,7 @@ import socket
 exo = exoscale.Exoscale()
 
 
+# connection to an instance via SSH and execute command
 def exec_ssh_cmd(cmd, host):
     username = 'ubuntu'
 
@@ -30,6 +31,7 @@ def exec_ssh_cmd(cmd, host):
     print("Exit status: %s" % channel.get_exit_status())
 
 
+# used to create 2 instance with the same name
 def instance_not_exists(zone, name):
     try:
         list(exo.compute.list_instances(zone, name))[0]
@@ -81,6 +83,8 @@ def new_instance(exo, name, template_name, zone, security_group, user_data, lan_
               (instance.name, instance.ipv4_address))
         return instance
 
+# create private network to permit local communication between all instances (without exposing port on Internet)
+
 
 def create_priv_nets(name):
     try:
@@ -102,7 +106,7 @@ def create_priv_nets(name):
 
 zone_gva2 = exo.compute.get_zone("ch-gva-2")
 
-
+# create security group to permit communication between backend and frontend
 try:
     security_group_web = exo.compute.create_security_group("web")
 
@@ -138,10 +142,9 @@ except exoscale.api.APIException as e:
     print(e)
     pass
 
+# configure LAN interface and upgrade apt cache
 user_data = """#cloud-config
     package_upgrade: true
-    packages:
-        - nginx
     write_files:
     - path: /etc/netplan/eth1.yaml
         content: |
@@ -165,7 +168,9 @@ created_instances.append(new_instance(
 created_instances.append(new_instance(
     exo=exo, name="frontend", template_name="frontend-template", zone=zone_gva2, security_group=exo.compute.get_security_group(name='web'), user_data=user_data, lan_ip='10.0.0.28', private_network=create_priv_nets('LAN')))
 
-
+# the backend and frontend application are not daemonize
+# one solution is to execute the commands to launch applications by ssh
+"""
 for instance in created_instances:
     if instance.name == 'backend':
         exec_ssh_cmd(
@@ -173,3 +178,4 @@ for instance in created_instances:
     if instance.name == 'frontend':
         exec_ssh_cmd(
             'cd /home/ubuntu/cloudsys-tp01/code/frontend/ ; ng serve --port=80 --host=0.0.0.0', instance.ipv4_address)
+"""
