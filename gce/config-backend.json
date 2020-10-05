@@ -1,0 +1,111 @@
+{
+    "canIpForward": false,
+    "confidentialInstanceConfig": {
+        "enableConfidentialCompute": false
+    },
+    "cpuPlatform": "Intel Skylake",
+    "creationTimestamp": "2020-09-22T01:54:11.425-07:00",
+    "deletionProtection": false,
+    "description": "",
+    "disks": [
+        {
+            "autoDelete": true,
+            "boot": true,
+            "deviceName": "backend-instance",
+            "diskSizeGb": "10",
+            "guestOsFeatures": [
+                {
+                    "type": "VIRTIO_SCSI_MULTIQUEUE"
+                },
+                {
+                    "type": "SEV_CAPABLE"
+                },
+                {
+                    "type": "UEFI_COMPATIBLE"
+                }
+            ],
+            "index": 0,
+            "interface": "SCSI",
+            "kind": "compute#attachedDisk",
+            "licenses": [
+                "projects/ubuntu-os-cloud/global/licenses/ubuntu-1604-xenial"
+            ],
+            "mode": "READ_WRITE",
+            "source": "projects/silent-caster-290308/zones/europe-west6-a/disks/backend-instance",
+            "type": "PERSISTENT"
+        }
+    ],
+    "displayDevice": {
+        "enableDisplay": false
+    },
+    "id": "5783452767964366174",
+    "kind": "compute#instance",
+    "labelFingerprint": "42WmSpB8rSM=",
+    "machineType": "projects/silent-caster-290308/zones/europe-west6-a/machineTypes/e2-medium",
+    "metadata": {
+        "fingerprint": "27O-hBrjCbM=",
+        "kind": "compute#metadata",
+        "items": [
+            {
+                "key": "startup-script",
+                "value": 0
+            }
+        ]
+    },
+    "name": "backend-instance",
+    "networkInterfaces": [
+        {
+            "accessConfigs": [
+                {
+                    "kind": "compute#accessConfig",
+                    "name": "External NAT",
+                    "natIP": "34.65.77.122",
+                    "networkTier": "PREMIUM",
+                    "type": "ONE_TO_ONE_NAT"
+                }
+            ],
+            "fingerprint": "JyOKyhpq3QA=",
+            "kind": "compute#networkInterface",
+            "name": "nic0",
+            "network": "projects/silent-caster-290308/global/networks/default",
+            "networkIP": "10.172.0.2",
+            "subnetwork": "projects/silent-caster-290308/regions/europe-west6/subnetworks/default"
+        }
+    ],
+    "reservationAffinity": {
+        "consumeReservationType": "ANY_RESERVATION"
+    },
+    "scheduling": {
+        "automaticRestart": true,
+        "onHostMaintenance": "MIGRATE",
+        "preemptible": false
+    },
+    "selfLink": "projects/silent-caster-290308/zones/europe-west6-a/instances/backend-instance",
+    "serviceAccounts": [
+        {
+            "email": "801858196555-compute@developer.gserviceaccount.com",
+            "scopes": [
+                "https://www.googleapis.com/auth/devstorage.read_only",
+                "https://www.googleapis.com/auth/logging.write",
+                "https://www.googleapis.com/auth/monitoring.write",
+                "https://www.googleapis.com/auth/servicecontrol",
+                "https://www.googleapis.com/auth/service.management.readonly",
+                "https://www.googleapis.com/auth/trace.append"
+            ]
+        }
+    ],
+    "shieldedInstanceConfig": {
+        "enableIntegrityMonitoring": true,
+        "enableSecureBoot": false,
+        "enableVtpm": true
+    },
+    "startRestricted": false,
+    "status": "RUNNING",
+    "tags": {
+        "fingerprint": "FYLDgkTKlA4=",
+        "items": [
+            "http-server"
+        ]
+    },
+    "zone": "projects/silent-caster-290308/zones/europe-west6-a"
+}
