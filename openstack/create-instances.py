@@ -1,6 +1,7 @@
 import os
 import sys
 import errno
+import openstack
 
 KEYPAIR_NAME="PassionCuisineAPI"
 
@@ -76,6 +77,24 @@ def create_security_group_server(conn):
 
   return sec_group
   
+def create_security_group_database(conn):
+  print("SG-Server")
+  print('------------------------------------------------------------------------\n')
+
+  sec_group = conn.network.create_security_group(
+        name="Database")
+
+  ssh_rule = conn.network.create_security_group_rule(
+        security_group_id=sec_group.id,
+        direction='ingress',
+        remote_ip_prefix='0.0.0.0/0',
+        protocol='TCP',
+        port_range_max='5432',
+        port_range_min='5432',
+        ethertype='IPv4')
+
+  return sec_group
+  
 def create_security_group_client(conn):
   print("SG-Client")
   print('------------------------------------------------------------------------\n')
@@ -98,12 +117,12 @@ def create_instance_database(conn):
   image = conn.compute.find_image("Database-snapshot")
   flavor = conn.compute.find_flavor("m1.small")
   network = create_network(conn)
-  security_group = conn.network.find_security_group("SSH")
+  security_group = [conn.network.find_security_group("SSH"),create_security_group_database(conn)]
   keypair = create_keypair(conn)
 
   server = conn.compute.create_server(
       name="Database-PassionCuisine-API", image_id=image.id, flavor_id=flavor.id,
-      networks=[{"uuid": network.id}], key_name=keypair.name, security_groups=[security_group])
+      networks=[{"uuid": network.id}], key_name=keypair.name, security_groups=security_group)
   server = conn.compute.wait_for_server(server)
   
 def create_instance_server(conn):
@@ -129,8 +148,13 @@ def create_instance_client(conn):
       name="Client-PassionCuisine-API", image_id=image.id, flavor_id=flavor.id,
       networks=[{"uuid": network.id}], key_name=keypair.name, security_groups=security_group)
   server = conn.compute.wait_for_server(server)
+ 
+def create_connection_from_config():
+  return openstack.connect()
+
+  
+conn = create_connection_from_config()
   
 create_instance_database(conn)
 create_instance_server(conn)
 create_instance_client(conn)
-
